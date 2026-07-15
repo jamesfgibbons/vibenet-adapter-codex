@@ -1,0 +1,7 @@
+{"observed_at":"2026-07-15T12:00:00.000Z","source_sequence":1,"message":{"method":"thread/status/changed","params":{"threadId":"fixture-thread-alpha","status":{"type":"notLoaded"}}}}
+{"observed_at":"2026-07-15T12:00:01.000Z","source_sequence":2,"message":{"method":"thread/status/changed","params":{"threadId":"fixture-thread-alpha","status":{"type":"idle"}}}}
+{"observed_at":"2026-07-15T12:00:02.000Z","source_sequence":3,"message":{"method":"turn/started","params":{"threadId":"fixture-thread-alpha","turn":{"id":"fixture-turn-one","items":[],"status":"inProgress"}}}}
+{"observed_at":"2026-07-15T12:00:03.000Z","source_sequence":4,"message":{"id":41,"method":"item/commandExecution/requestApproval","params":{"itemId":"fixture-item-one","startedAtMs":1784131203000,"threadId":"fixture-thread-alpha","turnId":"fixture-turn-one","command":"forbidden command text","cwd":"/forbidden/path"}}}
+{"observed_at":"2026-07-15T12:00:04.000Z","source_sequence":5,"message":{"method":"error","params":{"error":{"message":"forbidden error text","codexErrorInfo":null,"additionalDetails":null},"threadId":"fixture-thread-alpha","turnId":"fixture-turn-one","willRetry":true}}}
+{"observed_at":"2026-07-15T12:00:05.000Z","source_sequence":6,"message":{"method":"thread/status/changed","params":{"threadId":"fixture-thread-alpha","status":{"type":"active","activeFlags":[]}}}}
+{"observed_at":"2026-07-15T12:00:06.000Z","source_sequence":7,"message":{"method":"turn/completed","params":{"threadId":"fixture-thread-alpha","turn":{"id":"fixture-turn-one","items":[],"status":"completed"}}}}

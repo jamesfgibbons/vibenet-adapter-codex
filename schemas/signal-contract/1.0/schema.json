@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://vibenet.ai/protocol/v1/schema.json",
+  "title": "Signal Contract v1",
+  "description": "A renderer-facing awareness event emitted by agents, data systems, and devices.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "occurred_at",
+    "producer",
+    "entity",
+    "event",
+    "channel",
+    "valence",
+    "energy",
+    "tension",
+    "intensity",
+    "hue",
+    "pulse"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0",
+      "description": "Published version of the flat public event object."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable event identifier."
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "RFC 3339 / ISO 8601 timestamp."
+    },
+    "producer": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Producer or adapter that emitted the event."
+    },
+    "entity": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable subject identifier."
+    },
+    "event": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Meaningful awareness event."
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "nominal",
+        "advisory",
+        "warning",
+        "critical",
+        "recovery",
+        "opportunity",
+        "handoff"
+      ],
+      "description": "Public semantic channel."
+    },
+    "valence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Normalized affective polarity."
+    },
+    "energy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Normalized activity level."
+    },
+    "tension": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Normalized instability or unresolved uncertainty."
+    },
+    "intensity": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Renderer-facing emphasis."
+    },
+    "hue": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 360,
+      "description": "Renderer-facing hue hint."
+    },
+    "pulse": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Renderer-facing cadence hint."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional producer confidence."
+    },
+    "ttl_ms": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 2147483647,
+      "description": "Optional time-to-live in milliseconds."
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Optional contextual metadata. Empty object allowed. v1 metadata conventions may include optional publishable, indexable, and fallback_reason keys; the schema does not require or constrain them.",
+      "default": {}
+    }
+  }
+}

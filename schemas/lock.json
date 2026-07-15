@@ -1,0 +1,11 @@
+{
+  "codex_cli_version": "0.144.4",
+  "signal_contract_version": "1.0",
+  "agent_lifecycle_profile": "vibenet.agent-lifecycle/0.1",
+  "files": {
+    "schemas/codex-app-server/0.144.4/ServerNotification.json": "67669e13a8af9449da30acdbd83a6108fd54ed92b79849dee381aece1521937f",
+    "schemas/codex-app-server/0.144.4/ServerRequest.json": "7c8a2c6fe03d6afdf8a83f91fa5eb55e7ae630fe2e43a167691ab917dccc9556",
+    "schemas/signal-contract/1.0/schema.json": "87609b73e16f187b67db912754ad9efc916f2b8b7677c2ffacacb3d90fa38814",
+    "schemas/signal-contract/agent-lifecycle-0.1/profile.schema.json": "574070a277e7e5da080cce3ef10ebb972771669b92eebf24ca67d3a6f833932f"
+  }
+}

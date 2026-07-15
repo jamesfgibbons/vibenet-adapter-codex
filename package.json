@@ -1,0 +1,36 @@
+{
+  "name": "vibenet-adapter-codex",
+  "version": "0.1.0",
+  "description": "An independent VIBEnet adapter for the public Codex app-server.",
+  "type": "module",
+  "private": false,
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "vibenet-adapter-codex": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "schemas",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "verify:schemas": "tsx src/verifySchemas.ts",
+    "replay": "tsx src/cli.ts replay",
+    "normalize": "tsx src/cli.ts normalize"
+  },
+  "dependencies": {
+    "ajv": "8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.15.30",
+    "tsx": "4.20.3",
+    "typescript": "5.9.2"
+  },
+  "license": "Apache-2.0"
+}
