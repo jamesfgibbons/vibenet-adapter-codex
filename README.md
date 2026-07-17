@@ -22,9 +22,18 @@ The adapter does not launch an app-server, listen on a network port, execute com
 
 ## Privacy boundary
 
-Redaction happens before normalization. The adapter never emits or retains prompts, responses, reasoning, commands, paths, diffs, environment values, account identifiers, raw IDs, or request payloads. Thread and turn references are derived with keyed HMAC-SHA256. Live normalization fails closed when `VIBENET_REFERENCE_KEY` is missing.
+Redaction happens before normalization, and emission is whitelist-based.
 
-Unknown methods are ignored and counted only in aggregate. Recognized messages that fail the pinned source schema are also ignored without reflecting the source payload in logs or errors.
+- Ingests: an authorized Codex app-server JSONL stream (server notifications and requests, schema-pinned to `0.144.4`).
+- Reads from each recognized message: the method name, thread/turn/request identifiers, status fields, and `willRetry`. Nothing else is accessed.
+- Emits: one validated Signal Contract event per stdout line — lifecycle state, rendering fields, fixed provenance metadata, and keyed references. Stderr carries aggregate compatibility counters only.
+- Never emits or retains: prompts, responses, reasoning, commands, paths, diffs, environment values, account identifiers, raw source IDs, error text, or request payloads.
+
+Thread, turn, request, and event references are keyed HMAC-SHA256 digests, so raw identifiers are irreversible without the local key. Live normalization fails closed when `VIBENET_REFERENCE_KEY` is missing or shorter than 16 characters. Error messages are fixed strings that never include source content.
+
+Unknown methods are ignored and counted only in aggregate. Recognized messages that fail the pinned source schema are also ignored without reflecting the source payload in logs or errors. Every emitted event is validated against the vendored profile schema before it reaches stdout.
+
+This boundary is pinned by tests in `tests/adapter.test.ts`: a fixture replay laced with sentinel commands, paths, error text, and raw identifiers must emit none of them, and recognized messages carrying extra content fields must drop those fields.
 
 ## Lifecycle semantics
 
