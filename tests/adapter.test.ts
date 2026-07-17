@@ -181,3 +181,35 @@ test("fixture replay is byte-stable and source content never escapes", () => {
   }
   assert.match(first, /hmac-sha256:[a-f0-9]{64}/);
 });
+
+test("extra source content fields are dropped, never reflected", () => {
+  const parser = new SourceParser();
+  const engine = new LifecycleEngine(key);
+  const line = JSON.stringify({
+    method: "turn/started",
+    params: {
+      threadId: "raw-thread-secret",
+      prompt: "forbidden prompt text",
+      reasoning: "forbidden reasoning text",
+      environment: { API_KEY: "FORBIDDEN_ENV_VALUE" },
+      accountId: "forbidden-account-id",
+      turn: { id: "raw-turn-secret", items: [], status: "inProgress" },
+    },
+  });
+  const extracted = parser.parseLine(line, baseTime);
+  assert.ok(extracted);
+  const events = engine.ingest(extracted);
+  assert.equal(events.length, 1);
+  assertProfileValid(events);
+  const serialized = events.map((event) => JSON.stringify(event)).join("\n");
+  for (const forbidden of [
+    "raw-thread-secret",
+    "raw-turn-secret",
+    "forbidden prompt text",
+    "forbidden reasoning text",
+    "FORBIDDEN_ENV_VALUE",
+    "forbidden-account-id",
+  ]) {
+    assert.equal(serialized.includes(forbidden), false, forbidden);
+  }
+});
