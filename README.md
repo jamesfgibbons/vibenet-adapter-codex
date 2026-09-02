@@ -1,12 +1,40 @@
 # VIBEnet Adapter for Codex
 
-An independent VIBEnet adapter for the public Codex app-server.
+**How do you observe an agent without reading its work?**
 
-It converts an authorized JSONL app-server stream into validated Signal Contract v1 events using the additive `vibenet.agent-lifecycle/0.1` profile. It is a normalizer, not an official OpenAI integration or a Codex controller.
+VIBEnet Adapter for Codex is an independent, read-only normalizer for an
+authorized public Codex app-server JSONL stream. It emits validated lifecycle
+state—running, needs input, error, recovery, completion, and unobserved—without
+emitting the agent's work.
 
-## P0 boundary
+It never emits or retains prompts, responses, reasoning, commands, paths,
+diffs, environment values, account identifiers, raw source IDs, error text, or
+request payloads.
 
-P0 supports two local interfaces:
+It is not an official OpenAI integration, a Codex controller, or a live Codex
+Desktop fleet watcher. Public proof is a **documented replay**, not live fleet
+state.
+
+> **Release:** `v0.1.0` · **Runtime:** Node.js `>=22` · **Distribution:** tagged
+> GitHub source. This release is not published to npm.
+
+## Run the documented replay
+
+```bash
+git clone --branch v0.1.0 --depth 1 https://github.com/jamesfgibbons/vibenet-adapter-codex.git
+cd vibenet-adapter-codex
+npm ci
+npm run verify:schemas
+npm run replay -- --input fixtures/recovery-run.jsonl
+```
+
+The replay emits eight validated Signal Contract events to stdout and a final
+compatibility receipt to stderr. For the tagged fixture, the receipt reports
+eight emitted signals with zero duplicate, invalid, or unknown inputs.
+
+## Operating boundary
+
+The adapter supports two local interfaces:
 
 ```bash
 npm run replay -- --input fixtures/recovery-run.jsonl
@@ -18,7 +46,7 @@ VIBENET_REFERENCE_KEY='local-secret-at-least-16-characters' npm run normalize --
 - Every stdout line is one validated Signal Contract event.
 - Stderr contains aggregate compatibility counters only.
 
-The adapter does not launch an app-server, listen on a network port, execute commands, answer approvals, control threads, or resume turns. A separate stdio app-server process cannot passively subscribe to arbitrary Codex Desktop threads, so P0 does not claim cross-client live fleet observation.
+The adapter does not launch an app-server, listen on a network port, execute commands, answer approvals, control threads, or resume turns. A separate stdio app-server process cannot passively subscribe to arbitrary Codex Desktop threads, so this release does not claim cross-client live fleet observation.
 
 ## Privacy boundary
 
@@ -61,3 +89,14 @@ npm run build
 ```
 
 Fixture-backed public material must be labeled `documented replay`, never live fleet state.
+
+## Related, independent projects
+
+- [Evidence Harness](https://github.com/jamesfgibbons/evidence-harness) governs
+  what an agent may do.
+- [VIBEnet Signal Contract](https://github.com/jamesfgibbons/vibenet-signal-contract/tree/v1.1.0)
+  defines the renderer-facing event format and the
+  `vibenet.agent-lifecycle/0.1` profile this adapter emits.
+
+Evidence Harness is a gate. This adapter is a sensor. They can be used
+independently; neither sits inside or controls the other.
